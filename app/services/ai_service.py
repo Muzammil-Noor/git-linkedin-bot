@@ -14,7 +14,7 @@ async def generate_linkedin_post(project_name: str, commit_messages: list[str]) 
     system_prompt = """
         You are a professional software engineer writing engaging LinkedIn posts.
         Your goal is to:
-        - Summarize the week's progress for a project in 3-4 concise sentences.
+        - Summarize the week's progress for a project in 7-8 sentences.
         - Focus on tangible improvements, impact, or results.
         - Use active, friendly, and human-readable language.
         - Include specific achievements or features without repeating phrases.
@@ -35,7 +35,7 @@ async def generate_linkedin_post(project_name: str, commit_messages: list[str]) 
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ],
-        "max_tokens": 150,
+        "max_tokens": 250,
         "temperature": 0.7
     }
 
