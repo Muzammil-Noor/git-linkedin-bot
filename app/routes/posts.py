@@ -17,9 +17,6 @@ import asyncio
 
 router = APIRouter()
 
-
-router = APIRouter()
-
 @router.get("/linkedin-posts")
 async def linkedin_posts():
     commits = await get_weekly_commits()
@@ -28,7 +25,6 @@ async def linkedin_posts():
 
     posts = {}
 
-    # Run AI generation concurrently
     tasks = [
         generate_linkedin_post(project_name, [c["message"] for c in commits])
         for project_name, commits in grouped_projects.items()

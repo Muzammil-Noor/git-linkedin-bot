@@ -1,30 +1,54 @@
 import os
-from huggingface_hub import InferenceClient
+import aiohttp
+import asyncio
+import json
 
 HF_TOKEN = os.getenv("HF_TOKEN")
-
-client = InferenceClient(HF_TOKEN)
+HF_CHAT_URL = "https://router.huggingface.co/v1/chat/completions"
+HEADERS = {
+    "Authorization": f"Bearer {HF_TOKEN}",
+    "Content-Type": "application/json"
+}
 
 async def generate_linkedin_post(project_name: str, commit_messages: list[str]) -> str:
-    prompt = f"""
-    You are a professional software engineer summarizing work for LinkedIn.
-    Project: {project_name}
-    Commits this week:
-    {chr(10).join('- ' + m for m in commit_messages)}
-
-    Write a polished LinkedIn post (1-3 sentences) highlighting progress, improvements, and impact.
+    system_prompt = """
+        You are a professional software engineer writing engaging LinkedIn posts.
+        Your goal is to:
+        - Summarize the week's progress for a project in 3-4 concise sentences.
+        - Focus on tangible improvements, impact, or results.
+        - Use active, friendly, and human-readable language.
+        - Include specific achievements or features without repeating phrases.
+        - Optionally, add a subtle emoji for excitement or emphasis.
     """
 
-    # Use a summarization/generation model
-    # You can swap 'google/flan-t5-large' with any text-generation model
-    response = client.text_generation(
-        model="google/flan-t5-large",
-        inputs=prompt,
-        parameters={
-            "max_new_tokens": 250,
-            "temperature": 0.7
-        }
-    )
+    user_prompt = f"""
+        Project: {project_name}
+        Commits this week:
+        {chr(10).join('- ' + m for m in commit_messages)}
 
-    # response is a dict with 'generated_text'
-    return response.generated_text
+        Write a polished LinkedIn post following the guidelines above.
+    """
+
+    payload = {
+        "model": "Qwen/Qwen2.5-72B-Instruct",  # hosted instruction-tuned model
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ],
+        "max_tokens": 150,
+        "temperature": 0.7
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(HF_CHAT_URL, headers=HEADERS, data=json.dumps(payload)) as resp:
+            if not resp.status == 200:
+                text = await resp.text()
+                raise RuntimeError(f"HF API error {resp.status}: {text}")
+            data = await resp.json()
+            return data["choices"][0]["message"]["content"].strip()
+
+# Example usage
+if __name__ == "__main__":
+    commits = ["Refactored login flow", "Fixed bug in payment API", "Updated README"]
+    post = asyncio.run(generate_linkedin_post("AwesomeProject", commits))
+    print(post)
