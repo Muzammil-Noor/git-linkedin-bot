@@ -1,14 +1,29 @@
 from fastapi import APIRouter
-from app.services.github_service import get_user
+
+from app.services.github_service import (
+    get_repositories,
+    get_weekly_commits
+)
+
+from app.services.grouping_service import (
+    group_commits_by_repo
+)
 
 router = APIRouter()
 
-@router.get("/weekly")
-async def weekly_posts():
-    return {
-        "posts": []
-    }
 
-@router.get("/github-test")
-async def github_test():
-    return await get_user()
+@router.get("/repos")
+async def repos():
+    return await get_repositories()
+
+
+@router.get("/weekly-commits")
+async def weekly_commits():
+    return await get_weekly_commits()
+
+
+@router.get("/grouped-commits")
+async def grouped_commits():
+    commits = await get_weekly_commits()
+
+    return group_commits_by_repo(commits)
