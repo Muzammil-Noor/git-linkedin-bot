@@ -1,0 +1,102 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+venv/
+ENV/
+env/
+
+# Environment variables
+.env.*
+!.env.example
+
+# FastAPI / Uvicorn
+*.log
+uvicorn.log
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SQLite databases
+*.sqlite3
+*.db
+
+# Static/media/generated files
+media/
+staticfiles/
+
+# Docker
+docker-compose.override.yml
+
+# Alembic migrations (optional)
+# Uncomment if you don't want migrations tracked
+# alembic/versions/
+
+# Node.js frontend (if using React/Vue with FastAPI)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test outputs
+coverage.xml
+nosetests.xml
+
+# Secrets
+secrets.json
+*.pem
+*.key
+
+# Temporary files
+tmp/
+temp/
+*.tmp
