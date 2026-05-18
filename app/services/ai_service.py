@@ -15,6 +15,8 @@ async def generate_linkedin_post(project_name: str, commit_messages: list[str]) 
         You are a professional software engineer writing engaging LinkedIn posts.
         Your goal is to:
         - Summarize the week's progress for a project in 7-8 sentences.
+        - If a project is just started then mention that.
+        - If a project has ended with its final commits then mention that in the post as well
         - Focus on tangible improvements, impact, or results.
         - Use active, friendly, and human-readable language.
         - Include specific achievements or features without repeating phrases.
